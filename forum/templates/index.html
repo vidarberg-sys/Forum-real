@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if session.user_id %}
+<form action="{{ url_for('new_post') }}" method="post">
+    <textarea name="content" rows="4" cols="50" placeholder="Skriv ett inlägg..."></textarea><br>
+    <button type="submit">Skicka</button>
+</form>
+{% else %}
+<p>Logga in för att skriva inlägg.</p>
+{% endif %}
+
+<h2>Inlägg</h2>
+{% for post in posts %}
+    <div>
+        <b>{{ post.username }}</b> <small>{{ post.created }}</small>
+        <p>{{ post.content }}</p>
+    </div>
+    <hr>
+{% else %}
+    <p>Inga inlägg ännu.</p>
+{% endfor %}
+
+{% endblock %}

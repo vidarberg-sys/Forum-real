@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Forum</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">Hem</a>
+        {% if session.username %}
+            Inloggad som <b>{{ session.username }}</b>
+            <a href="{{ url_for('logout') }}">Logga ut</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Logga in</a>
+            <a href="{{ url_for('register') }}">Registrera</a>
+        {% endif %}
+    </nav>
+    <hr>
+
+    {% for message in get_flashed_messages() %}
+        <p style="color:red">{{ message }}</p>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
