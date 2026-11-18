@@ -1,24 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h2>Diskussionstrådar</h2>
 {% if session.user_id %}
-<form action="{{ url_for('new_post') }}" method="post">
-    <textarea name="content" rows="4" cols="50" placeholder="Skriv ett inlägg..."></textarea><br>
-    <button type="submit">Skicka</button>
-</form>
+    <p><a href="{{ url_for('new_topic') }}">+ Ny tråd</a></p>
 {% else %}
-<p>Logga in för att skriva inlägg.</p>
+    <p>Logga in för att skapa trådar och svara.</p>
 {% endif %}
 
-<h2>Inlägg</h2>
-{% for post in posts %}
-    <div>
-        <b>{{ post.username }}</b> <small>{{ post.created }}</small>
-        <p>{{ post.content }}</p>
+{% for t in topics %}
+    <div class="topic">
+        <a href="{{ url_for('topic', topic_id=t.id) }}"><b>{{ t.title }}</b></a><br>
+        <small>
+            Av {{ t.author }}, {{ t.created }} · {{ t.post_count }} inlägg
+            {% if t.latest_post %}· senaste {{ t.latest_post }}{% endif %}
+        </small>
     </div>
-    <hr>
 {% else %}
-    <p>Inga inlägg ännu.</p>
+    <p>Inga trådar ännu.</p>
 {% endfor %}
+
+{% if unthreaded_posts %}
+    <h2>Äldre inlägg (utan tråd)</h2>
+    {% for post in unthreaded_posts %}
+        <div class="post">
+            <b>{{ post.username }}</b> <small>{{ post.created }}</small>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
 
 {% endblock %}

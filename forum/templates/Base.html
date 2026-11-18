@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Forum</h1>
     <nav>
         <a href="{{ url_for('index') }}">Hem</a>
         {% if session.username %}
+            <a href="{{ url_for('new_topic') }}">Ny tråd</a>
             Inloggad som <b>{{ session.username }}</b>
             <a href="{{ url_for('logout') }}">Logga ut</a>
         {% else %}
@@ -19,7 +22,7 @@
     <hr>
 
     {% for message in get_flashed_messages() %}
-        <p style="color:red">{{ message }}</p>
+        <p class="flash">{{ message }}</p>
     {% endfor %}
 
     {% block content %}{% endblock %}
